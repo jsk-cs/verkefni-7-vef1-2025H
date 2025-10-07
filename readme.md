@@ -91,7 +91,7 @@ Verkefni sett fyrir í fyrirlestri mánudaginn 6. október 2025.
 
 ## Skil
 
-Skila skal í Canvas, seinasta lagi fyrir lok dags fimmtudaginn 16. nóvember 2025.
+Skila skal í Canvas, seinasta lagi fyrir lok dags fimmtudaginn 16. október 2025.
 
 Skilaboð skulu innihalda:
 
