@@ -1,34 +1,10 @@
-/**
- * Sýnilausn á verkefni 7 í vef1 2025.
- *
- * Notar jsdoc fyrir skjölun og týpur.
- * Hægt að kveikja á `Check JS` og `Strict Null Checks` í VSCode til að fá
- * ábendingar um hvar hlutir geti bilað.
- *
- * Munið að þetta verkefni skal skrifað af ykkur án hjálpar mállíkans.
- * Agents, models and other LLMs or AI tools must not be used to implement this
- * assignment. They can be used to help with understanding concepts and if that
- * is done, include a link to the chat via sharing.
- */
 
 /** @typedef {Object} TodoItem
  * @property {string} text - Texti verkefnis.
  * @property {boolean} finished - Hvort verkefni sé klárað eða ekki.
- */
-
-/** Verkefnalistinn okkar, hann mun innihalda hluti (objects) af týpu
- * `TodoItem`.
- * Með því að skilgreina týpuna og kveikja á `Check JS` í VSCode fáum við villu
- * ef við reynum að setja eitthvað annað en `TodoItem` í listann.
  * @type {TodoItem[]}
  */
-const todoList = [
-  // Hér er hægt að fjarlægja komment til að hafa nokkur verkefni í byrjun
-  // Ekki skila með þessu inni.
-  // { text: "Læra CSS", finished: true },
-  // { text: "Læra JavaScript", finished: false },
-  // { text: "Búa til verkefnalista", finished: false },
-];
+const todoList = [];
 
 //------------------------------------------------------------------------------
 // Föll sem vinna með verkefnalistann
@@ -39,14 +15,35 @@ const todoList = [
  * @returns {number} Ný stærð verkefnalistans.
  */
 function createTodoItem(input) {
-  /* TODO útfæra */
+  if (typeof input !== "string" || input.trim() === "") {
+    console.error("Villa: Texti verður að vera strengur og ekki tómur.");
+    return todoList.length;
+  }
+
+  const item = {
+    text: input.trim(),
+    finished: false,
+  };
+
+  todoList.push(item);
+  console.log('Verkefni bætt við: "' + item.text + '"');
+  return todoList.length;
 }
 
 /**
  * Birtir verkefnalistann í console.
  */
 function list() {
-  /* TODO útfæra */
+  if (todoList.length === 0) {
+    console.log("Verkefnalisti er tómur.");
+    return;
+  }
+
+  console.log("Verkefnalisti:");
+  todoList.forEach((item, index) => {
+    const status = item.finished ? "klárað" : "óklárað";
+    console.log(index + ". " + item.text + " — " + status);
+  });
 }
 
 /**
@@ -56,26 +53,79 @@ function list() {
  * @returns {boolean} - `true` ef breyting tókst, annars `false`.
  */
 function toggleFinished(index) {
-  /* TODO útfæra */
+  if (typeof index !== "number" || index < 0 || index >= todoList.length) {
+    console.error("Villa: ógilt númer verkefnis.");
+    return false;
+  }
+
+  const item = todoList[index];
+  item.finished = !item.finished;
+  const status = item.finished ? "klárað" : "óklárað";
+  console.log('Verkefni "' + item.text + '" er núna ' + status + ".");
+  return true;
 }
 
 /**
  * Skrifar út stöðu verkefnalistans í console.
  */
 function stats() {
-  /* TODO útfæra */
+  const done = todoList.filter(i => i.finished).length;
+  const notDone = todoList.length - done;
+
+  console.log("Tölfræði:");
+  console.log("Kláruð verkefni: " + done);
+  console.log("Ókláruð verkefni: " + notDone);
 }
 
 /**
  * Tæma verkefnalistann.
  */
 function clear() {
-  /* TODO útfæra */
+  if (todoList.length === 0) {
+    console.log("Verkefnalisti er tómur, ekkert til að eyða.");
+    return;
+  }
+
+  const hasFinished = todoList.some(item => item.finished === true);
+  if (!hasFinished) {
+    console.log("Engin kláruð verkefni til að eyða.");
+    return
+  }
+
+  if (confirm("Viltu eyða öllum kláruðum verkefnum?")) {
+    for (let i = todoList.length - 1; i >= 0; i--) {
+      if (todoList[i].finished) {
+        todoList.splice(i, 1);
+      }
+    }
+    console.log("Kláruð verkefni hafa verið fjarlægð.");
+  } 
+  
+  else {
+    console.log("Hætt við að eyða verkefnum.");
+  }
 }
 
 /**
  * Leiðbeint ferli til að bæta verkefnum við, sýnir síðan lista og stöðu.
  */
 function start() {
-  /* TODO útfæra */
+  while (true) {
+    const input = prompt("Sláðu inn texta fyrir nýtt verkefni (hættu með Cancel):");
+
+    if (input === null) {
+      console.log("Hætt við að bæta við verkefnum.");
+      break;
+    }
+
+    if (input.trim() === "") {
+      alert("Verkefni verður að hafa texta!");
+      continue;
+    }
+
+    createTodoItem(input);
+  }
+
+  list();
+  stats();
 }
